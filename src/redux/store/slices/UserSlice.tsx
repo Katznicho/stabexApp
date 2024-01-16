@@ -50,7 +50,14 @@ export const userSlice = createSlice({
         email: '',
         displayPicture: '',
         phone: ""
-      }
+      },
+        state.authToken = '';
+      state.isGuest = true
+    },
+    showAuthScreen: (state, action: PayloadAction<boolean>) => {
+      state.isGuest = false;
+      state.isLoggedIn = false
+
     },
 
 
@@ -72,6 +79,7 @@ export const {
   updateUserState,
   logoutUser,
   updateProfilePicture,
+  showAuthScreen,
 } = userSlice.actions;
 
 export default userSlice.reducer;
