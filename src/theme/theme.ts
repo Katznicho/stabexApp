@@ -49,8 +49,8 @@ interface Color {
 }
 
 export const COLORS: Color = {
-  primaryRedHex: '#DC3535',
-  primaryOrangeHex: '#191F6C',
+  primaryRedHex: '#d1111b',
+  primaryOrangeHex: '#322f90',
   primaryBlackHex: '#ffffff',
   primaryDarkGreyHex: '#141921',
   secondaryDarkGreyHex: '#21262E',
@@ -146,3 +146,6 @@ export const BORDERRADIUS: BorderRadius = {
   radius_20: 20,
   radius_25: 25,
 };
+
+// Red: #d1111b
+// Blue: #322f90

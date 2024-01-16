@@ -137,7 +137,7 @@ const DrawerContent = (props: any) => {
                     icon={() => <CustomIcon
                         name="home"
                         size={25}
-                        color={COLORS.primaryWhiteHex}
+                        color={selectedItem === 'Home' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex}
                     />}
                     onPress={() => {
                         setSelectedItem('Home');
@@ -152,7 +152,7 @@ const DrawerContent = (props: any) => {
 
 
                     }, styles.tabStyles]}
-                    labelStyle={styles.labelStyle}
+                    labelStyle={[styles.labelStyle, { color: selectedItem === 'Home' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
                     activeBackgroundColor={COLORS.primaryOrangeHex}
                     activeTintColor={COLORS.primaryWhiteHex}
                     inactiveBackgroundColor={COLORS.primaryBlackHex}
@@ -163,7 +163,7 @@ const DrawerContent = (props: any) => {
                     icon={() => <AntDesign
                         name="creditcard"
                         size={25}
-                        color={COLORS.primaryWhiteHex}
+                        color={selectedItem === 'Payments' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex}
 
                     />}
                     onPress={() => {
@@ -184,8 +184,8 @@ const DrawerContent = (props: any) => {
 
 
                     }, styles.tabStyles]}
-                    labelStyle={styles.labelStyle}
-                    // active={selectedItem === 'Home'}
+                    labelStyle={[styles.labelStyle, { color: selectedItem === 'Payments' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
+
                     activeBackgroundColor={COLORS.primaryOrangeHex}
                     activeTintColor={COLORS.primaryWhiteHex}
                     inactiveBackgroundColor={COLORS.primaryBlackHex}
@@ -196,7 +196,7 @@ const DrawerContent = (props: any) => {
                     icon={() => <MaterialCommunityIcons
                         name="truck-delivery"
                         size={25}
-                        color={COLORS.primaryWhiteHex}
+                        color={selectedItem === 'Deliveries' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex}
                     />
                     }
                     onPress={() => {
@@ -217,8 +217,7 @@ const DrawerContent = (props: any) => {
                                 : COLORS.primaryBlackHex,
 
                     }, styles.tabStyles]}
-                    labelStyle={styles.labelStyle}
-                    // active={selectedItem === 'Home'}
+                    labelStyle={[styles.labelStyle, { color: selectedItem === 'Deliveries' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
                     activeBackgroundColor={COLORS.primaryOrangeHex}
                     activeTintColor={COLORS.primaryWhiteHex}
                     inactiveBackgroundColor={COLORS.primaryBlackHex}
@@ -255,7 +254,7 @@ const DrawerContent = (props: any) => {
                                     : COLORS.primaryBlackHex,
 
                         }, styles.tabStyles]}
-                        labelStyle={styles.labelStyle}
+                        labelStyle={[styles.labelStyle, { color: selectedItem === 'Share App' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
                         activeBackgroundColor={COLORS.primaryOrangeHex}
                         activeTintColor={COLORS.primaryWhiteHex}
                         inactiveBackgroundColor={COLORS.primaryBlackHex}
@@ -283,7 +282,7 @@ const DrawerContent = (props: any) => {
                                     : COLORS.primaryBlackHex,
 
                         }, styles.tabStyles]}
-                        labelStyle={styles.labelStyle}
+                        labelStyle={[styles.labelStyle, { color: selectedItem === 'Support' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
                         activeBackgroundColor={COLORS.primaryOrangeHex}
                         activeTintColor={COLORS.primaryWhiteHex}
                         inactiveBackgroundColor={COLORS.primaryBlackHex}
@@ -311,7 +310,7 @@ const DrawerContent = (props: any) => {
                                     : COLORS.primaryBlackHex,
 
                         }, styles.tabStyles]}
-                        labelStyle={styles.labelStyle}
+                        labelStyle={[styles.labelStyle, { color: selectedItem === 'Website' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
                         activeBackgroundColor={COLORS.primaryOrangeHex}
                         activeTintColor={COLORS.primaryWhiteHex}
                         inactiveBackgroundColor={COLORS.primaryBlackHex}
@@ -339,7 +338,7 @@ const DrawerContent = (props: any) => {
                                     : COLORS.primaryBlackHex,
 
                         }, styles.tabStyles]}
-                        labelStyle={styles.labelStyle}
+                        labelStyle={[styles.labelStyle, { color: selectedItem === 'AboutUs' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
                         activeBackgroundColor={COLORS.primaryOrangeHex}
                         activeTintColor={COLORS.primaryWhiteHex}
                         inactiveBackgroundColor={COLORS.primaryBlackHex}

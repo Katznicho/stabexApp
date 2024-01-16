@@ -3,13 +3,12 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { COLORS } from '../theme/theme';
 import { BlurView } from '@react-native-community/blur';
-import HomeScreen from '../screens/HomeScreen';
-import FavoritesScreen from '../screens/FavoritesScreen';
-import CartScreen from '../screens/CartScreen';
-import OrderHistoryScreen from '../screens/OrderHistoryScreen';
 import CustomIcon from '../components/CustomIcon';
 import HomeStack from './HomeStack';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import OrderStack from './OrderStack';
+import CardStack from './CardStack';
+import Entypo from 'react-native-vector-icons/Entypo';
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
@@ -18,7 +17,9 @@ const TabNavigator = () => {
       screenOptions={{
         tabBarHideOnKeyboard: true,
         headerShown: false,
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
+        tabBarActiveTintColor: COLORS.primaryOrangeHex,
+        tabBarInactiveTintColor: COLORS.primaryLightGreyHex,
         tabBarStyle: styles.tabBarStyle,
         tabBarBackground: () => (
           <BlurView
@@ -32,6 +33,7 @@ const TabNavigator = () => {
         name="HomeTab"
         component={HomeStack}
         options={{
+          title: "Home",
           tabBarIcon: ({ focused, color, size }) => (
             <CustomIcon
               name="home"
@@ -43,13 +45,14 @@ const TabNavigator = () => {
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name="Cart"
-        component={CartScreen}
+        name="Orders"
+        component={OrderStack}
         options={{
+          title: "My Orders",
           tabBarIcon: ({ focused, color, size }) => (
-            <CustomIcon
-              name="cart"
-              size={25}
+            <Ionicons
+              name="reorder-four-outline"
+              size={26}
               color={
                 focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
               }
@@ -57,26 +60,28 @@ const TabNavigator = () => {
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name="Favorite"
-        component={FavoritesScreen}
+        name="Notifications"
+        component={CardStack}
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <CustomIcon
-              name="like"
-              size={25}
-              color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
-              }
-            />
-          ),
-        }}></Tab.Screen>
-      <Tab.Screen
-        name="History"
-        component={OrderHistoryScreen}
-        options={{
+          title: "Notifications",
           tabBarIcon: ({ focused, color, size }) => (
             <CustomIcon
               name="bell"
+              size={25}
+              color={
+                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+              }
+            />
+          ),
+        }}></Tab.Screen>
+      <Tab.Screen
+        name="Card"
+        component={CardStack}
+        options={{
+          title: "My Cards",
+          tabBarIcon: ({ focused, color, size }) => (
+            <Entypo
+              name="credit-card"
               size={25}
               color={
                 focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
@@ -90,12 +95,13 @@ const TabNavigator = () => {
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    height: 80,
+    height: 60,
     position: 'absolute',
     backgroundColor: COLORS.primaryBlackRGBA,
     borderTopWidth: 0,
     elevation: 0,
     borderTopColor: 'transparent',
+
   },
   BlurViewStyles: {
     position: 'absolute',
@@ -105,5 +111,6 @@ const styles = StyleSheet.create({
     right: 0,
   },
 });
+
 
 export default TabNavigator;

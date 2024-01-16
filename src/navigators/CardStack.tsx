@@ -1,62 +1,40 @@
-import React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../screens/HomeScreen';
-import { generalStyles } from '../screens/utils/generatStyles';
 import { TouchableOpacity } from 'react-native';
+import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import Entypo from 'react-native-vector-icons/Entypo';
 import { COLORS } from '../theme/theme';
-import DetailsScreen from '../screens/DetailsScreen';
-import CartScreen from '../screens/CartScreen';
-import PaymentScreen from '../screens/PaymentScreen';
-import HeaderBar from '../components/HeaderBar';
-import { RootState } from '../redux/store/dev';
-import { useSelector } from 'react-redux';
-import { useShowGreeting } from '../hooks/useShowGreetings';
+import { generalStyles } from '../screens/utils/generatStyles';
+import Index from '../screens/cardScreens/Index';
+import ApplyForCard from '../screens/cardScreens/ApplyForCard';
+import Entypo from 'react-native-vector-icons/Entypo';
+import CardScreen from '../screens/cardScreens/CardScreen';
+
+
+
 
 const Stack = createNativeStackNavigator();
 
-const HomeStack = () => {
+const CardStack = () => {
     const navigation = useNavigation<any>();
-    const { user, isGuest } = useSelector((state: RootState) => state.user);
-    const greetings = useShowGreeting();
+
     return (
-        <Stack.Navigator initialRouteName="HomeScreen" >
+        <Stack.Navigator initialRouteName="CardScreen">
             <Stack.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-                options={{
-                    animation: 'slide_from_bottom',
-                    // headerShown: true
-                    header: () => <HeaderBar
-                        title={` ${greetings} ${isGuest ? 'Guest' : user?.fullName}`}
 
-                    />
-                }}>
-
-            </Stack.Screen>
-
-
-            {/* product details */}
-            <Stack.Screen
-                name="Details"
-                component={DetailsScreen}
-
+                name="CardScreen"
+                component={Index}
                 options={{
                     animation: 'slide_from_bottom',
                     headerShown: false
                 }}
-            >
-            </Stack.Screen>
-            {/* product details */}
+            />
 
-            {/* cart item */}
             <Stack.Screen
-                name="Cart"
-                component={CartScreen}
+                name="ApplyForCard"
+                component={ApplyForCard}
                 options={{
                     animation: 'slide_from_bottom',
-                    title: 'My Cart',
+                    title: 'Self Registration',
                     headerStyle: generalStyles.headerStyle,
                     headerTitleStyle: generalStyles.titleHeaderStyles,
                     headerTintColor: COLORS.primaryBlackHex,
@@ -76,17 +54,16 @@ const HomeStack = () => {
                     ),
                 }}
             >
+
             </Stack.Screen>
-            {/* cart item */}
 
-            {/* payments screen  */}
+            {/* linked card */}
             <Stack.Screen
-                name="Payment"
-                component={PaymentScreen}
-
+                name="LinkedCard"
+                component={CardScreen}
                 options={{
                     animation: 'slide_from_bottom',
-                    title: 'Payment',
+                    title: 'Linked Card',
                     headerStyle: generalStyles.headerStyle,
                     headerTitleStyle: generalStyles.titleHeaderStyles,
                     headerTintColor: COLORS.primaryBlackHex,
@@ -105,12 +82,12 @@ const HomeStack = () => {
                         </TouchableOpacity>
                     ),
                 }}
-            >
-            </Stack.Screen>
-            {/* payments screen */}
+            ></Stack.Screen>
+            {/* linked card */}
+
+
         </Stack.Navigator>
-    )
-}
+    );
+};
 
-export default HomeStack
-
+export default CardStack;
