@@ -1,4 +1,4 @@
-import {  ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import HeadProfileCard from '../../components/HeadProfileCard';
 import ProfileDetailsCard from '../../components/ProfileCardDetails';
@@ -19,10 +19,7 @@ const Profile = () => {
       name: 'Edit Profile',
       screen: 'EditProfile',
     },
-    {
-      name: 'Verification',
-      screen: 'Verification',
-    },
+
     {
       name: 'Private Policy',
       screen: 'PrivatePolicy',

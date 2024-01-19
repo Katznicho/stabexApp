@@ -1,4 +1,4 @@
-import {  StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from "../../theme/theme";
 
 export const generalStyles = StyleSheet.create({
@@ -104,8 +104,10 @@ export const generalStyles = StyleSheet.create({
     color: COLORS.primaryBlackHex,
     fontFamily: FONTFAMILY.poppins_light,
     // fontFamily: FONTFAMILY.poppins_medium,
-
-
+  },
+  viewStyles: {
+    marginHorizontal: 20,
+    marginVertical: 10
   },
 
   formInput: {
@@ -137,6 +139,22 @@ export const generalStyles = StyleSheet.create({
   },
   scrollViewContentPadding: {
     paddingBottom: 100
-  }
+  },
+  CardTitle: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    color: COLORS.primaryWhiteHex,
+    fontSize: FONTSIZE.size_14,
+  },
+  CardSubtitle: {
+    fontFamily: FONTFAMILY.poppins_light,
+    color: COLORS.primaryWhiteHex,
+    fontSize: FONTSIZE.size_10,
+    // marginHorizontal: SPACING.space_10
+  },
+  CardPriceCurrency: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    color: COLORS.primaryOrangeHex,
+    fontSize: FONTSIZE.size_12,
+  },
 
 });

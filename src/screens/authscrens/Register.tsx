@@ -1,7 +1,7 @@
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { generalStyles } from '../utils/generatStyles'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard, Button } from 'react-native'
 import { COLORS } from '../../theme/theme'
 import { useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from '../../components/ActivityIndicator'
@@ -9,16 +9,30 @@ import { APP_USERS } from '../utils/constants/constants'
 import { showMessage } from 'react-native-flash-message'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { REGISTER } from '../utils/constants/routes'
-import { validateEmail } from '../utils/helpers/helpers'
+import { validateEmail } from '../utils/helpers/helpers';
+
+
+import PhoneInput from "react-native-phone-number-input";
 
 const Register = () => {
 
   const navigation = useNavigation<any>();
   const [fullName, setfullName] = React.useState<any>('');
-  const [phoneNumber, setPhoneNumber] = React.useState<any>('');
+  // const [phoneNumber, setPhoneNumber] = React.useState<any>('');
   const [email, setEmail] = React.useState<any>('');
   const [password, setPassword] = React.useState<any>('');
   const [confirmPassword, setConfirmPassword] = React.useState<any>('');
+
+  //phone number details
+  const [value, setValue] = useState("");
+  const [formattedValue, setFormattedValue] = useState("");
+  const [valid, setValid] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const phoneInput = useRef<PhoneInput>(null);
+  //phone number details
+
+
+  //phone number details
 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<any>({
@@ -72,7 +86,7 @@ const Register = () => {
       password: password.trim(),
       confirmPassword: confirmPassword.trim(),
 
-      phoneNumber: phoneNumber.trim(),
+      // phoneNumber: phoneNumber.trim(),
     };
     setLoading(true)
     Keyboard.dismiss()
@@ -159,14 +173,14 @@ const Register = () => {
     }
     catch (error) {
       setLoading(false);
-      showMessage({
-        message: "Error",
-        description: "An error occured while creating your account",
-        type: "info",
-        autoHide: true,
-        duration: 3000,
-        icon: "danger"
-      })
+      // showMessage({
+      //   message: "Error",
+      //   description: "An error occured while creating your account",
+      //   type: "info",
+      //   autoHide: true,
+      //   duration: 3000,
+      //   icon: "danger"
+      // })
     }
 
   }
@@ -230,7 +244,7 @@ const Register = () => {
           </View>
 
           <TextInput
-            style={generalStyles.formInput}
+            style={[generalStyles.formInput, styles.textInputMarginRight]}
             placeholder={'enter your full name name'}
             keyboardType="default"
             placeholderTextColor={COLORS.primaryWhiteHex}
@@ -255,16 +269,24 @@ const Register = () => {
             <Text style={generalStyles.formInputTextStyle}>
               Phone Number </Text>
           </View>
-          <TextInput
-            style={generalStyles.formInput}
-            placeholder="Enter phone number with country code"
-            placeholderTextColor={COLORS.primaryLightGreyHex}
-            keyboardType="number-pad"
-            value={phoneNumber}
-            onChangeText={text => setPhoneNumber(text)}
-
+          <PhoneInput
+            ref={phoneInput}
+            defaultValue={value}
+            defaultCode="UG"
+            layout="second"
+            onChangeText={(text) => {
+              setValue(text);
+            }}
+            onChangeFormattedText={(text) => {
+              setFormattedValue(text);
+            }}
+            placeholder={'enter phone number'}
+            containerStyle={[generalStyles.formInput, { backgroundColor: COLORS.primaryLightWhiteGrey, }]}
+            textContainerStyle={{ paddingVertical: 0, backgroundColor: COLORS.primaryLightWhiteGrey }}
+            textInputProps={{
+              placeholderTextColor: COLORS.primaryWhiteHex
+            }}
           />
-
           <View>
             {errors.phoneNumber && <Text style={generalStyles.errorText}>{errors.phoneNumber}</Text>}
           </View>
@@ -282,7 +304,7 @@ const Register = () => {
           </View>
 
           <TextInput
-            style={generalStyles.formInput}
+            style={[generalStyles.formInput, styles.textInputMarginRight]}
             placeholder={'enter email'}
             keyboardType="email-address"
             placeholderTextColor={COLORS.primaryWhiteHex}
@@ -300,7 +322,7 @@ const Register = () => {
 
         {/* password */}
         {/* password */}
-        <View style={generalStyles.formContainer}>
+        <View style={[generalStyles.formContainer]}>
           <View>
             <Text style={generalStyles.formInputTextStyle}>
               Password</Text>
@@ -387,26 +409,6 @@ const Register = () => {
           onPress={() => onRegister()}>
           <Text style={generalStyles.loginText}>{'Register'}</Text>
         </TouchableOpacity>
-        <>
-          {/* <Text style={styles.orTextStyle}> {'OR'}</Text>
-      <Text style={styles.facebookText}>
-        {'Login With Google'}
-      </Text> */}
-        </>
-
-
-        {/* <IMGoogleSignInButton
-      containerStyle={styles.googleButtonStyle}
-      onPress={onGoogleButtonPress}
-    /> */}
-
-        {/* <TouchableOpacity
-      style={styles.phoneNumberContainer}
-      onPress={() => navigation.navigate('Sms', { isSigningUp: false })}>
-      <Text style={styles.phoneNumber}>
-        Login with phone number
-      </Text>
-    </TouchableOpacity> */}
 
         {loading && <ActivityIndicator />}
       </KeyboardAwareScrollView>
@@ -420,8 +422,41 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: -20,
   },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
   viewStyles: {
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginRight: 15
   },
+  phoneInput: {
+    height: 50,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  countryButton: {
+    marginBottom: 20,
+  },
+  countryPickerButton: {
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    marginBottom: 20,
+  },
+  countryPickerCloseButton: {
+    width: 20,
+    height: 20,
+  },
+  submitButton: {
+    width: '100%',
+  },
+  textInputMarginRight: {
+    marginRight: 15
+  }
 })

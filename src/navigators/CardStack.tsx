@@ -1,4 +1,3 @@
-import { TouchableOpacity } from 'react-native';
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -6,8 +5,12 @@ import { COLORS } from '../theme/theme';
 import { generalStyles } from '../screens/utils/generatStyles';
 import Index from '../screens/cardScreens/Index';
 import ApplyForCard from '../screens/cardScreens/ApplyForCard';
-import Entypo from 'react-native-vector-icons/Entypo';
 import CardScreen from '../screens/cardScreens/CardScreen';
+import CardTransactions from '../screens/cardScreens/CardTransactions';
+import HeaderBar from '../components/HeaderBar';
+import ArrowBack from '../components/ArrowBack';
+import PaymentMethods from '../screens/cardScreens/PaymentMethods';
+import PaymentSummary from '../screens/cardScreens/PaymentSummary';
 
 
 
@@ -40,17 +43,7 @@ const CardStack = () => {
                     headerTintColor: COLORS.primaryBlackHex,
                     headerTitleAlign: 'center',
                     headerLeft: () => (
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPress={() => navigation.goBack()}
-                            style={{ marginLeft: 10 }}
-                        >
-                            <Entypo
-                                name="chevron-left"
-                                color={COLORS.primaryBlackHex}
-                                size={28}
-                            />
-                        </TouchableOpacity>
+                        <ArrowBack />
                     ),
                 }}
             >
@@ -69,21 +62,63 @@ const CardStack = () => {
                     headerTintColor: COLORS.primaryBlackHex,
                     headerTitleAlign: 'center',
                     headerLeft: () => (
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPress={() => navigation.goBack()}
-                            style={{ marginLeft: 10 }}
-                        >
-                            <Entypo
-                                name="chevron-left"
-                                color={COLORS.primaryBlackHex}
-                                size={28}
-                            />
-                        </TouchableOpacity>
+                        <ArrowBack />
                     ),
                 }}
             ></Stack.Screen>
             {/* linked card */}
+
+            {/* card transactions */}
+            <Stack.Screen
+                name="CardTransactions"
+                component={CardTransactions}
+                options={{
+                    animation: 'slide_from_bottom',
+                    // headerShown: true
+                    header: () => <HeaderBar
+                        title={` Card Transactions`}
+
+                    />
+                }}>
+
+            </Stack.Screen>
+            {/* card transactions */}
+
+            {/* saved payment method */}
+            <Stack.Screen
+                name="TopToYourCard"
+                component={PaymentMethods}
+                options={{
+                    animation: 'slide_from_bottom',
+                    title: 'Top To Your Card',
+                    headerStyle: generalStyles.headerStyle,
+                    headerTitleStyle: generalStyles.titleHeaderStyles,
+                    headerTintColor: COLORS.primaryBlackHex,
+                    headerTitleAlign: 'center',
+                    headerLeft: () => (
+                        <ArrowBack />
+                    ),
+                }}
+            ></Stack.Screen>
+            {/* saved payment method */}
+
+            {/* summary */}
+            <Stack.Screen
+                name="PaymentSummary"
+                component={PaymentSummary}
+                options={{
+                    animation: 'slide_from_bottom',
+                    title: 'Payment Summary',
+                    headerStyle: generalStyles.headerStyle,
+                    headerTitleStyle: generalStyles.titleHeaderStyles,
+                    headerTintColor: COLORS.primaryBlackHex,
+                    headerTitleAlign: 'center',
+                    headerLeft: () => (
+                        <ArrowBack />
+                    ),
+                }}
+            ></Stack.Screen>
+            {/* summary */}
 
 
         </Stack.Navigator>

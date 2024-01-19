@@ -9,6 +9,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import OrderStack from './OrderStack';
 import CardStack from './CardStack';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import ProfileStack from './ProfileStack';
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
@@ -59,21 +61,7 @@ const TabNavigator = () => {
             />
           ),
         }}></Tab.Screen>
-      <Tab.Screen
-        name="Notifications"
-        component={CardStack}
-        options={{
-          title: "Notifications",
-          tabBarIcon: ({ focused, color, size }) => (
-            <CustomIcon
-              name="bell"
-              size={25}
-              color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
-              }
-            />
-          ),
-        }}></Tab.Screen>
+
       <Tab.Screen
         name="Card"
         component={CardStack}
@@ -82,6 +70,21 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused, color, size }) => (
             <Entypo
               name="credit-card"
+              size={25}
+              color={
+                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+              }
+            />
+          ),
+        }}></Tab.Screen>
+      <Tab.Screen
+        name="Profile"
+        component={ProfileStack}
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ focused, color, size }) => (
+            <AntDesign
+              name="user"
               size={25}
               color={
                 focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex

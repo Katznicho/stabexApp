@@ -248,7 +248,7 @@ const UserWallet = () => {
 
                     <TouchableOpacity
                         activeOpacity={1}
-                        onPress={() => navigation.navigate("AllTransactions")}
+                        onPress={() => navigation.navigate("CardTransactions")}
                         style={[generalStyles.flexStyles, { alignItems: "center", justifyContent: "space-between" }]}
                     >
                         <Text style={[styles.avaialableText]}>Transaction History</Text>
@@ -256,7 +256,7 @@ const UserWallet = () => {
                             name={"chevron-forward-sharp"}
                             size={24}
                             color={COLORS.secondaryGreyHex}
-                            onPress={() => navigation.navigate("AllTransactions")}
+                            onPress={() => navigation.navigate("CardTransactions")}
                         />
                     </TouchableOpacity>
 

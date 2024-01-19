@@ -112,7 +112,7 @@ const Index = () => {
                         width: 300,
                         height: 300,
                         alignSelf: 'center',
-                        borderRadius: 20
+                        borderRadius: 10
                     }}
                 />
 
