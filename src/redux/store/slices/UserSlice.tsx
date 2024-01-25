@@ -9,7 +9,6 @@ export interface UserState {
 }
 
 interface User {
-  id: string;
   fullName: string;
   email: string;
   phone: string;
@@ -20,7 +19,6 @@ interface User {
 const initialState: UserState = {
   isLoggedIn: false,
   user: {
-    id: '',
     fullName: '',
     email: '',
     displayPicture: '',
@@ -45,7 +43,6 @@ export const userSlice = createSlice({
     logoutUser: state => {
       state.isLoggedIn = false;
       state.user = {
-        id: '',
         fullName: '',
         email: '',
         displayPicture: '',

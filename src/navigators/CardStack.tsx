@@ -37,7 +37,7 @@ const CardStack = () => {
                 component={ApplyForCard}
                 options={{
                     animation: 'slide_from_bottom',
-                    title: 'Self Registration',
+                    title: 'Card Application',
                     headerStyle: generalStyles.headerStyle,
                     headerTitleStyle: generalStyles.titleHeaderStyles,
                     headerTintColor: COLORS.primaryBlackHex,

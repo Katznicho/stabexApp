@@ -3,9 +3,8 @@ import {
     View,
     ScrollView,
     TouchableOpacity,
-    TextInput
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
     useSharedValue,
@@ -20,11 +19,20 @@ import { generalStyles } from '../utils/generatStyles';
 import { COLORS } from '../../theme/theme';
 import { causeVibration, validateEmail } from '../utils/helpers/helpers';
 import { ActivityIndicator } from '../../components/ActivityIndicator';
+import PhoneInput from "react-native-phone-number-input";
 
 const ForgotPasswordScreen = () => {
     const [email, setEmail] = useState<string>('');
 
     const [errors, setErrors] = useState<any>({ email: '', });
+
+    //phone number details
+    const [value, setValue] = useState("");
+    const [formattedValue, setFormattedValue] = useState("");
+    const [valid, setValid] = useState(false);
+    // const [showMessage, setShowMessage] = useState(false);
+    const phoneInput = useRef<PhoneInput>(null);
+    //phone number details
 
 
 
@@ -160,33 +168,41 @@ const ForgotPasswordScreen = () => {
                     <Text
                         style={[generalStyles.textStyle]}
                     >
-                        Enter your email address. We will send you a link to
-                        reset your password
+                        Enter your phone number. We will send you instructions on how to reset your password
                     </Text>
                 </View>
 
                 <View>
+                    {/* phone number */}
                     <View style={generalStyles.formContainer}>
                         <View>
                             <Text style={generalStyles.formInputTextStyle}>
-                                Email</Text>
+                                Phone Number </Text>
                         </View>
-
-                        <TextInput
-                            style={generalStyles.formInput}
-                            placeholder={'enter email'}
-                            keyboardType="email-address"
-                            placeholderTextColor={COLORS.primaryWhiteHex}
-                            onChangeText={text => setEmail(text)}
-                            value={email}
-                            underlineColorAndroid="transparent"
-                            autoCapitalize="none"
+                        <PhoneInput
+                            ref={phoneInput}
+                            defaultValue={value}
+                            defaultCode="UG"
+                            layout="second"
+                            onChangeText={(text) => {
+                                setValue(text);
+                            }}
+                            onChangeFormattedText={(text) => {
+                                setFormattedValue(text);
+                            }}
+                            placeholder={'enter phone number'}
+                            containerStyle={[generalStyles.formInput, { backgroundColor: COLORS.primaryLightWhiteGrey, }]}
+                            textContainerStyle={{ paddingVertical: 0, backgroundColor: COLORS.primaryLightWhiteGrey }}
+                            textInputProps={{
+                                placeholderTextColor: COLORS.primaryWhiteHex
+                            }}
                         />
                         <View>
-                            {errors.email && <Text style={generalStyles.errorText}>{errors.email}</Text>}
+                            {errors.phoneNumber && <Text style={generalStyles.errorText}>{errors.phoneNumber}</Text>}
                         </View>
 
                     </View>
+                    {/* phone number */}
 
                     {/* button */}
                     <TouchableOpacity

@@ -1,6 +1,6 @@
 import { Text, View, TouchableOpacity, TextInput, Image, StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { generalStyles } from '../utils/generatStyles';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../theme/theme';
@@ -10,55 +10,49 @@ import { LOGIN } from '../utils/constants/routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { updateUserState } from '../../redux/store/slices/UserSlice';
 import { useDispatch } from 'react-redux';
-import { validateEmail } from '../utils/helpers/helpers';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import PhoneInput from "react-native-phone-number-input";
+import { Buffer } from "buffer"
+
 
 const Login = () => {
   const dispatch = useDispatch<any>()
 
   const navigation = useNavigation<any>();
-  const [email, setEmail] = React.useState<any>('');
   const [password, setPassword] = React.useState<any>('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState<boolean>(false)
   // Function to toggle the password visibility state 
+
+  //phone number details
+  const [phoneNumber, setPhoneNumber] = React.useState<any>('');
+  const phoneInput = useRef<PhoneInput>(null);
+  //phone number details
+
   const toggleShowPassword = () => { setShowPassword(!showPassword); };
 
   const [errors, setErrors] = useState<any>({
-    email: '',
+    phoneNumber: '',
     password: '',
   });
 
 
 
   const onPressLogin = async () => {
-    if (email == "") {
+    if (phoneNumber == "") {
       setErrors((prevErrors: any) => ({
         ...prevErrors,
-        email: "Email is required"
+        phoneNumber: "phone number is required"
       }));
       return;
     }
     else {
       setErrors((prevErrors: any) => ({
         ...prevErrors,
-        email: ""
+        phoneNumber: ""
       }));
     }
-    if (!validateEmail(email)) {
 
-      setErrors((prevErrors: any) => ({
-        ...prevErrors,
-        email: 'Invalid email format',
-      }));
-      return;
-
-    } else {
-      setErrors((prevErrors: any) => ({
-        ...prevErrors,
-        email: '',
-      }));
-    }
 
     if (password == "") {
       setErrors((prevErrors: any) => ({
@@ -77,120 +71,97 @@ const Login = () => {
     try {
       setLoading(true)
 
-      // const headers = new Headers();
-      // headers.append('Accept', 'application/json');
-      // const body = new FormData();
-      // body.append('email', email.toLowerCase());
-      // body.append('password', password);
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
 
-      // fetch(`${LOGIN}`, {
-      //   method: 'POST',
-      //   headers,
-      //   body,
-      // })
-      //   .then(response => response.json())
-      //   .then(async result => {
-      //     console.log(result);
+      const body = {
+        password: password.trim(),
+        msisdn: phoneNumber.replace(/\+/g, '').trim(),
+        emailAddress: ''
+      }
 
-      //     if (result?.errors) {
-      //       setErrors(result.errors);
-      //       showMessage({
-      //         message: "Error",
-      //         description: "Invalid email or password",
-      //         type: "info",
-      //         autoHide: true,
-      //         duration: 3000,
-      //         icon: "danger"
-      //       })
-      //       return setLoading(false);
-      //     }
+      console.log(body);
 
-      //     if (result.response === 'failure') {
-      //       setErrors({
-      //         // email: [result?.message],
-      //         password: [result?.message],
-      //       });
-      //       showMessage({
-      //         message: "Error",
-      //         description: "Invalid email or password",
-      //         type: "info",
-      //         autoHide: true,
-      //         duration: 3000,
-      //         icon: "danger"
-      //       })
-      //       return setLoading(false);
-      //     }
+      fetch(`${LOGIN}`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body)
+      })
+        .then(response => response.json())
+        .then(async result => {
+          console.log(result);
 
-      //     if (result?.response === 'success') {
-      //       //login in user with firebase using email and password
-      //       // const userCredentials = await auth().signInWithEmailAndPassword(
-      //       //   email,
-      //       //   password,
-      //       // );
+          if (result?.status === 200) {
+            console.log("===========token==================")
+            console.log(result?.token)
+            console.log("============token========================")
 
-      //       //store the token in the async storage
-      //       AsyncStorage.setItem('token', result?.authToken);
-      //       //"name": "Katende Nicholas"
-      //       let name = result.user.name;
-      //       let firstName = name.split(' ')[0];
-      //       let lastName = name.split(' ')[1];
+            const parts: Buffer[] = result?.token.split('.').map((part: string): Buffer => {
+              return Buffer.from(part.replace(/-/g, '+').replace(/_/g, '/'), 'base64');
+            });
+            const payload = JSON.parse(parts[1].toString());
 
-      //       dispatch(
-      //         updateUserState({
-      //           isLoggedIn: true,
-      //           user: {
-      //             UID: result?.user.id,
-      //             fullName: firstName,
-      //             lname: lastName,
-      //             email: result?.user?.email,
-      //             phone: result?.user?.phone_number,
-      //             displayPicture: result?.user?.avatar,
-      //             isVerified: false,
-      //             reuseType: result?.user.role
-      //           },
-      //           authToken: result?.authToken,
-      //         }),
-      //       );
+            console.log(payload)
 
-      //       setLoading(false);
-      //       setEmail('');
-      //       setPassword('');
-      //     }
 
-      //     setLoading(false);
-      //   })
-      //   .catch(error => {
-      //     console.log('error', error);
 
-      //     setLoading(false);
-      //   });
 
-      setTimeout(() => {
-        setLoading(false);
-        dispatch(
-          updateUserState({
-            isLoggedIn: true,
-            user: {
-              id: "1",
-              fullName: "Katende Nicholas",
-              email: email,
-              phone: "0759983853",
-              displayPicture: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-            },
-            authToken: "123456789",
-            isGuest: false
-          }),
-        );
+            console.log("logged in")
 
-      }, 3000)
+            //store the token in the async storage
+            // AsyncStorage.setItem('token', result?.token);
+            //"name": "Katende Nicholas"
+            // let name = result.user.name;
+            // let firstName = name.split(' ')[0];
+            // let lastName = name.split(' ')[1];
 
+            dispatch(
+              updateUserState({
+                isLoggedIn: true,
+                user: {
+                  fullName: payload?.fullName,
+                  email: payload?.email,
+                  phone: payload?.phoneNumber,
+                  displayPicture: payload?.displayPicture,
+
+                },
+                authToken: result?.token,
+                isGuest: false
+              }),
+            );
+
+            setLoading(false);
+            setPhoneNumber('');
+            setPassword('');
+          }
+          else {
+            setLoading(false);
+            setErrors({
+
+            })
+            return showMessage({
+              message: "Login Failed",
+              description: "Wrong Credentials",
+              type: "info",
+              // autoHide: true,
+              duration: 3000
+            })
+          }
+
+          setLoading(false);
+        })
+        .catch(error => {
+          console.log('error', JSON.stringify(error.message));
+
+          setLoading(false);
+        });
 
 
     } catch (error) {
       setLoading(false)
       showMessage({
         message: "Error",
-        description: "Invalid email or password",
+        description: "Wrong Credentials",
         type: "info",
         autoHide: true,
         duration: 3000,
@@ -258,27 +229,33 @@ const Login = () => {
         </View>
         {/* center logo */}
 
+        {/* phone number */}
         <View style={generalStyles.formContainer}>
           <View>
             <Text style={generalStyles.formInputTextStyle}>
-              Email/ Phone Number</Text>
+              Phone Number </Text>
           </View>
-
-          <TextInput
-            style={generalStyles.formInput}
-            placeholder={'enter email or phone number'}
-            keyboardType="email-address"
-            placeholderTextColor={COLORS.primaryWhiteHex}
-            onChangeText={text => setEmail(text)}
-            value={email}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
+          <PhoneInput
+            ref={phoneInput}
+            defaultValue={phoneNumber}
+            defaultCode="UG"
+            layout="second"
+            onChangeFormattedText={(text) => {
+              setPhoneNumber(text);
+            }}
+            placeholder={'enter phone number'}
+            containerStyle={[generalStyles.formInput, { backgroundColor: COLORS.primaryLightWhiteGrey, }]}
+            textContainerStyle={{ paddingVertical: 0, backgroundColor: COLORS.primaryLightWhiteGrey }}
+            textInputProps={{
+              placeholderTextColor: COLORS.primaryWhiteHex
+            }}
           />
           <View>
-            {errors.email && <Text style={generalStyles.errorText}>{errors.email}</Text>}
+            {errors.phoneNumber && <Text style={generalStyles.errorText}>{errors.phoneNumber}</Text>}
           </View>
 
         </View>
+        {/* phone number */}
 
 
         <View style={generalStyles.formContainer}>
@@ -332,26 +309,7 @@ const Login = () => {
           onPress={() => onPressLogin()}>
           <Text style={generalStyles.loginText}>{'Login'}</Text>
         </TouchableOpacity>
-        <>
-          {/* <Text style={styles.orTextStyle}> {'OR'}</Text>
-        <Text style={styles.facebookText}>
-          {'Login With Google'}
-        </Text> */}
-        </>
 
-
-        {/* <IMGoogleSignInButton
-        containerStyle={styles.googleButtonStyle}
-        onPress={onGoogleButtonPress}
-      /> */}
-
-        {/* <TouchableOpacity
-        style={styles.phoneNumberContainer}
-        onPress={() => navigation.navigate('Sms', { isSigningUp: false })}>
-        <Text style={styles.phoneNumber}>
-          Login with phone number
-        </Text>
-      </TouchableOpacity> */}
 
         {loading && <ActivityIndicator />}
       </KeyboardAwareScrollView>
@@ -369,6 +327,7 @@ const styles = StyleSheet.create({
   viewStyles: {
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginRight: 15
   },
 
 });

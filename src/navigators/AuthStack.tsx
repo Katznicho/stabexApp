@@ -75,7 +75,7 @@ const AuthStack = () => {
                 name="VerifyEmail"
                 component={VerificationScreen}
                 options={{
-                    title: 'Verify Email',
+                    title: 'Verify Phone Number',
                     headerStyle: {
                         backgroundColor: COLORS.primaryOrangeHex
                     },
@@ -88,7 +88,7 @@ const AuthStack = () => {
                 name="ResendEmail"
                 component={ResendEmailScreen}
                 options={{
-                    title: 'Resend Email',
+                    title: 'Resend',
                     headerStyle: {
                         backgroundColor: COLORS.primaryOrangeHex
                     },

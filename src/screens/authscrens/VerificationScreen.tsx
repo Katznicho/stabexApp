@@ -187,7 +187,7 @@ const VerificationScreen = () => {
 
                 <View style={styles.contentRow}>
                     <Text style={[generalStyles.textStyle]}>
-                        Check your email. We have sent you a code
+                        Check your phone for the verification code
                     </Text>
                 </View>
 

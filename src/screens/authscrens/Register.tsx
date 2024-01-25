@@ -5,29 +5,22 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard, Button }
 import { COLORS } from '../../theme/theme'
 import { useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from '../../components/ActivityIndicator'
-import { APP_USERS } from '../utils/constants/constants'
 import { showMessage } from 'react-native-flash-message'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { REGISTER } from '../utils/constants/routes'
 import { validateEmail } from '../utils/helpers/helpers';
-
-
 import PhoneInput from "react-native-phone-number-input";
 
 const Register = () => {
 
   const navigation = useNavigation<any>();
   const [fullName, setfullName] = React.useState<any>('');
-  // const [phoneNumber, setPhoneNumber] = React.useState<any>('');
   const [email, setEmail] = React.useState<any>('');
   const [password, setPassword] = React.useState<any>('');
   const [confirmPassword, setConfirmPassword] = React.useState<any>('');
 
   //phone number details
-  const [value, setValue] = useState("");
-  const [formattedValue, setFormattedValue] = useState("");
-  const [valid, setValid] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
+  const [phoneNumber, setPhoneNumber] = React.useState<any>('');
   const phoneInput = useRef<PhoneInput>(null);
   //phone number details
 
@@ -92,78 +85,77 @@ const Register = () => {
     Keyboard.dismiss()
 
     try {
-      // const headers = new Headers();
-      // headers.append('Accept', 'application/json');
+      const headers = new Headers();
+      headers.append('Accept', 'application/json');
 
-      // const body = new FormData();
-      // body.append('email', email.toLowerCase());
-      // body.append('password', password);
-      // body.append("phone_number", phoneNumber)
-      // body.append("full_name", fullName);
-      // body.append("role", APP_USERS.RECEIVER);
-      // body.append("confirm_password", confirmPassword);
-      // fetch(`${REGISTER}`, {
-      //   method: 'POST',
-      //   headers,
-      //   body,
-      // })
-      //   .then(response => response.json())
-      //   .then(async result => {
-      //     console.log(result);
+      const body = new FormData();
+      body.append('email', email.toLowerCase());
+      body.append('password', password);
+      body.append("phoneNumber", phoneNumber)
+      body.append("fullName", fullName);
+      body.append("confirmPassword", confirmPassword);
+      fetch(`${REGISTER}`, {
+        method: 'POST',
+        headers,
+        body,
+      })
+        .then(response => response.json())
+        .then(async result => {
+          console.log(result);
 
-      //     if (result?.errors) {
-      //       setErrors(result.errors);
-      //       showMessage({
-      //         message: "Error",
-      //         description: "Invalid email or password",
-      //         type: "info",
-      //         autoHide: true,
-      //         duration: 3000,
-      //         icon: "danger"
-      //       })
-      //       return setLoading(false);
-      //     }
+          if (result?.errors) {
+            setErrors(result.errors);
+            showMessage({
+              message: "Error",
+              description: "Invalid email or password",
+              type: "info",
+              autoHide: true,
+              duration: 3000,
+              icon: "danger"
+            })
+            return setLoading(false);
+          }
 
-      //     if (result.response === 'failure') {
-      //       setErrors({
-      //         // email: [result?.message],
-      //         password: [result?.message],
-      //       });
-      //       showMessage({
-      //         message: "Error",
-      //         description: "Invalid email or password",
-      //         type: "info",
-      //         autoHide: true,
-      //         duration: 3000,
-      //         icon: "danger"
-      //       })
-      //       return setLoading(false);
-      //     }
+          if (result.response === 'failure') {
+            setErrors({
+              // email: [result?.message],
+              password: [result?.message],
+            });
+            showMessage({
+              message: "Error",
+              description: "Invalid email or password",
+              type: "info",
+              autoHide: true,
+              duration: 3000,
+              icon: "danger"
+            })
+            return setLoading(false);
+          }
 
-      //     if (result?.response === 'success') {
-      //       showMessage({
-      //         message: "VerifyEmail",
-      //         description: "An verification code has been sent to your email",
-      //         type: "success",
-      //         autoHide: true,
-      //         duration: 3000,
-      //         icon: "success"
-      //       })
-      // navigation.navigate("VerifyEmail", { email: email })
-      // setLoading(false);
+          if (result?.response === 'success') {
+            showMessage({
+              message: "VerifyEmail",
+              description: "An verification code has been sent to your email",
+              type: "success",
+              autoHide: true,
+              duration: 3000,
+              icon: "success"
+            })
+            navigation.navigate("VerifyEmail", { email: email })
+            setLoading(false);
 
-      //     }
-
+          }
 
 
 
-      //     setLoading(false);
-      //   })
-      //   .catch(error => {
-      //     console.log('error', error);
 
-      //     setLoading(false);
-      //   });
+          setLoading(false);
+        })
+        .catch(error => {
+          console.log('error', error);
+
+          setLoading(false);
+        });
 
       setTimeout(() => {
         setLoading(false);
@@ -271,14 +263,12 @@ const Register = () => {
           </View>
           <PhoneInput
             ref={phoneInput}
-            defaultValue={value}
+            defaultValue={phoneNumber}
             defaultCode="UG"
             layout="second"
-            onChangeText={(text) => {
-              setValue(text);
-            }}
+
             onChangeFormattedText={(text) => {
-              setFormattedValue(text);
+              setPhoneNumber(text);
             }}
             placeholder={'enter phone number'}
             containerStyle={[generalStyles.formInput, { backgroundColor: COLORS.primaryLightWhiteGrey, }]}
@@ -391,17 +381,6 @@ const Register = () => {
         </View>
 
         {/* confirm  password*/}
-        {/* conform passsword */}
-
-
-
-        {/* <View style={styles.forgotPasswordContainer}>
-      <TouchableOpacity onPress={() => onForgotPassword()}>
-        <Text style={styles.forgotPasswordText}>
-          {'Forgot password?'}
-        </Text>
-      </TouchableOpacity>
-    </View> */}
 
         <TouchableOpacity
           activeOpacity={1}

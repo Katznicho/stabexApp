@@ -120,6 +120,7 @@ const Index = () => {
                 <View style={generalStyles.flexStyles}>
 
                     <TouchableOpacity
+                        activeOpacity={1}
                         style={[generalStyles.loginContainer,
                         styles.buttonCardStyles
                         ]}
@@ -132,8 +133,9 @@ const Index = () => {
                     {/* button */}
 
                     <TouchableOpacity
+                        activeOpacity={1}
                         style={[generalStyles.loginContainer, styles.buttonCardStyles]}
-                    // onPress={createProduct}
+                        onPress={() => navigation.navigate("ApplyForCard")}
 
                     >
                         <Text style={[generalStyles.loginText, { color: COLORS.primaryWhiteHex }]}>

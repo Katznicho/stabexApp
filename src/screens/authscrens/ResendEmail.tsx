@@ -4,7 +4,7 @@ import {
     TextInput,
     ScrollView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Animated, {
     useAnimatedStyle,
@@ -21,6 +21,7 @@ import { TouchableOpacity } from 'react-native';
 import { COLORS } from '../../theme/theme';
 import { ActivityIndicator } from '../../components/ActivityIndicator';
 import { showMessage } from 'react-native-flash-message';
+import PhoneInput from "react-native-phone-number-input";
 
 
 const ResendEmailScreen = () => {
@@ -28,6 +29,14 @@ const ResendEmailScreen = () => {
 
     const [email, setEmail] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
+
+    //phone number details
+    const [value, setValue] = useState("");
+    const [formattedValue, setFormattedValue] = useState("");
+    const [valid, setValid] = useState(false);
+    const [showMessage, setShowMessage] = useState(false);
+    const phoneInput = useRef<PhoneInput>(null);
+    //phone number details
 
     const [errors, setErrors] = useState<any>({});
 
@@ -111,16 +120,16 @@ const ResendEmailScreen = () => {
                     triggerErrorAnimation();
                     return setLoading(false);
                 }
-                showMessage({
-                    message: "Code Resent",
-                    description: "An otp has been resent to your email",
-                    icon: "success",
-                    autoHide: true,
-                    duration: 3000
-                })
+                // showMessage({
+                //     message: "Code Resent",
+                //     description: "An otp has been resent to your email",
+                //     icon: "success",
+                //     autoHide: true,
+                //     duration: 3000
+                // })
 
                 navigation.navigate('VerifyEmail', { email: email });
-            
+
 
                 setLoading(false);
             })
@@ -146,30 +155,39 @@ const ResendEmailScreen = () => {
                 <Text style={[{ fontSize: 20 }, generalStyles.textStyle]}>Resend OTP Code</Text>
 
                 <Text style={[generalStyles.textStyle]}>
-                    Please re-enter your email again to resend verification code
+                    Please re-enter your phone number again to resend verification code
                 </Text>
 
+                {/* phone number */}
                 <View style={generalStyles.formContainer}>
                     <View>
                         <Text style={generalStyles.formInputTextStyle}>
-                            Email</Text>
+                            Phone Number </Text>
                     </View>
-
-                    <TextInput
-                        style={generalStyles.formInput}
-                        placeholder={'enter email'}
-                        keyboardType="email-address"
-                        placeholderTextColor={COLORS.primaryWhiteHex}
-                        onChangeText={text => setEmail(text)}
-                        value={email}
-                        underlineColorAndroid="transparent"
-                        autoCapitalize="none"
+                    <PhoneInput
+                        ref={phoneInput}
+                        defaultValue={value}
+                        defaultCode="UG"
+                        layout="second"
+                        onChangeText={(text) => {
+                            setValue(text);
+                        }}
+                        onChangeFormattedText={(text) => {
+                            setFormattedValue(text);
+                        }}
+                        placeholder={'enter phone number'}
+                        containerStyle={[generalStyles.formInput, { backgroundColor: COLORS.primaryLightWhiteGrey, }]}
+                        textContainerStyle={{ paddingVertical: 0, backgroundColor: COLORS.primaryLightWhiteGrey }}
+                        textInputProps={{
+                            placeholderTextColor: COLORS.primaryWhiteHex
+                        }}
                     />
                     <View>
-                        {errors.email && <Text style={generalStyles.errorText}>{errors.email}</Text>}
+                        {errors.phoneNumber && <Text style={generalStyles.errorText}>{errors.phoneNumber}</Text>}
                     </View>
 
                 </View>
+                {/* phone number */}
 
                 {/* button */}
                 <TouchableOpacity
